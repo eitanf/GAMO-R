@@ -1,6 +1,6 @@
 # Genetic Algorithms for Mathematical Optimization - Representations
 
-A genetic algorithm (GA) for optimizing functions of the form    f: R^n --> R   (i.e. vector input, scalar output). Inspired by Caruana & Schaffer's (1986) study of binary vs. gray code in GAs, this program was conceieved with the objective of gaining a better understanding on how different base 2 genotypic representations affected performance. As of now, it supports two different representations (standard binary and binary reflected gray code) but the user can easily define more. 
+A genetic algorithm (GA) for optimizing functions of the form    f: R^n --> R   (i.e. vector input, scalar output). Inspired by Caruana & Schaffer's (1986) study of binary vs. gray code in GAs, this program was conceived with the objective of gaining a better understanding on how different base 2 genotypic representations affect performance. As of now, it supports two different representations (standard binary and binary reflected gray code) but the user can easily define more. 
 
 Executing the main program runs the GA (one with binary genotype, one with gray genotype) on each of De Jong's (1975) test functions a number of times (NUM_TRIALS). The output is printed to the console and to multiple text files (one text file per GA run). The resulting data (average fitness vs. generation #) is averaged and plotted using matplotlib. 
 
