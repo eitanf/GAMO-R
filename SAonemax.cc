@@ -2,15 +2,23 @@
  * This program lets you run a simulated annealing (SA) optimization on the
  * integer One-Max problem from Rothlauf's book "Representations for Genetic
  * and Evolutionary Algorithms", 2nd ed., Sec. 5.4.2.
+ * Prerequisite: Intel TBB library (libtbb-dev on debian distributions).
+ * Compile with:
+g++-8 -Wall -Wextra -pedantic -O3 -march=native -std=c++17 SAonemax.cc  -ltbb -o SAonemax
  */
 
 #include <algorithm>
+#include <atomic>
 #include <cassert>
 #include <cstdlib>
 #include <functional>
 #include <iostream>
 #include <random>
 #include <vector>
+
+#include "tbb/parallel_for.h"
+#include "tbb/blocked_range.h"
+using namespace tbb;
 
 std::random_device randdev;
 using bits_t = std::vector<bool>;
@@ -144,7 +152,7 @@ std_binary_rep(const bits_t& bits)
   for (auto bit = bits.crbegin(); bit != bits.crend(); bit++, p++) {
     ret += phenotype_t(*bit) << (p - 1);
   }
-  assert(ret < (1LL << bits.size()));
+  assert(ret < (phenotype_t(1) << bits.size()));
   return ret;
 }
 
@@ -161,7 +169,7 @@ brg_rep(const bits_t& bits)
     ret |= (*it)? prev_bit ^ 1 : prev_bit;
   }
 
-  assert(ret < (1LL << bits.size()));
+  assert(ret < (phenotype_t(1) << bits.size()));
   return ret;
 }
 
@@ -176,7 +184,7 @@ onemax(const phenotype_t a, const rep_t& rep, const bits_t& bits)
 {
   const auto phenotype = rep(bits);
   const auto maxfit = (1 << bits.size()) - 1;
-  assert(a <= maxfit);
+  assert(double(a) <= maxfit);
   return maxfit - abs(double(phenotype) - a);
 }
 
@@ -188,6 +196,7 @@ void usage()
   std::cerr << "p:\tPopulation size, how many bitstrings are concatenated\n";
   std::cerr << "g:\tNumber of generations (fitness evaluations) to run for\n";
   std::cerr << "e:\tNumber of experiments to run concurrently\n";
+}
 
 int main(int argc, char* argv[])
 {
@@ -217,7 +226,6 @@ int main(int argc, char* argv[])
   const auto maxfit = (1 << len) - 1;
 
   std::vector<SA> sims;
-  std::vector<unsigned> opt_counts(1000);
 
   for(size_t i = 0; i < experiments; ++i) {
     sims.push_back(SA(popsize, len, fit));
@@ -225,12 +233,18 @@ int main(int argc, char* argv[])
 
 
   std::cout << "# Generation  ratio_optimal\n";
-  for (int g = 0; g < generations; ++g) {
-    unsigned opt_count = 0;
+  for (unsigned g = 0; g < generations; ++g) {
+    std::atomic<unsigned> opt_count = 0;
+    parallel_for(size_t(0), sims.size(), [&](size_t i) {
+      opt_count += sims[i].num_optimal(maxfit);
+      sims[i].generation();
+    });
+    /*
     for (auto& sim : sims) {
       opt_count += sim.num_optimal(maxfit);
       sim.generation();
     }
+    */
 
     std::cout << g << "\t";
     std::cout << double(opt_count) / (experiments * popsize) << "\n";
