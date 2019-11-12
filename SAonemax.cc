@@ -173,6 +173,26 @@ brg_rep(const bits_t& bits)
   return ret;
 }
 
+// Representation from an explicit mapping of bits to values.
+// The mapping is given as an array, where the value in the n-th location
+// is the mapped value from the n-th bitstring (using standrard binary ordering)
+phenotype_t
+explicit_rep(const bits_t& bits, const std::vector<phenotype_t>& mapping)
+{
+  const phenotype_t loc = std_binary_rep(bits);
+  return mapping[loc];
+}
+
+// A few example mappings for len=3 bits (assume a=4)
+const std::vector<phenotype_t> one_maxima =   { 6, 4, 0, 1, 5, 3, 7, 2 };
+const std::vector<phenotype_t> two_maxima =   { 3, 4, 6, 2, 5, 0, 7, 1 };
+const std::vector<phenotype_t> three_maxima = { 6, 3, 4, 0, 1, 2, 7, 5 };
+const std::vector<phenotype_t> four_maxima =  { 2, 3, 5, 1, 4, 7, 0, 6 };
+// "Worst" representation for len=5, a = 15
+const std::vector<phenotype_t> five_worst =
+  { 4, 30, 29, 13, 24, 8, 2, 18, 21, 15, 10, 25, 14, 31, 17, 1,
+    28, 9, 3, 27, 7, 20, 16, 5, 0, 23, 26, 6, 19, 12, 11, 22 };
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Fitness functions for the one-max problem: given an 'a' value and a
@@ -222,7 +242,8 @@ int main(int argc, char* argv[])
     experiments = atoi(argv[4]);
   }
 
-  const auto fit = [a](const bits_t& bits) { return onemax(a, std_binary_rep, bits); };
+  const auto rep = [](const bits_t& bits){ return explicit_rep(bits, five_worst); };
+  const auto fit = [=](const bits_t& bits) { return onemax(a, rep, bits); };
   const auto maxfit = (1 << len) - 1;
 
   std::vector<SA> sims;
