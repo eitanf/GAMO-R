@@ -27,7 +27,8 @@ def buildTmat(rep, a):
     """
     assert(a < 2**rep.num_bits())
     states = list(rep.get_rep().keys())
-    f = [a - abs(x - a) for x in range(0,2**rep.num_bits())]
+    xmax = 2**rep.num_bits() -1
+    f = [xmax - abs(x - a) for x in range(0,xmax+1)]
     getF = lambda bitstr : f[rep.to_num(bitstr)]
 
     b = rep.num_bits()
@@ -62,7 +63,8 @@ def initTmatTemperature(rep, a, T = 50):
 
     assert(a < 2**rep.num_bits())
     states = list(rep.get_rep().keys())
-    f = [a - abs(x - a) for x in range(0,2**rep.num_bits())]
+    xmax = 2**rep.num_bits() -1
+    f = [xmax - abs(x - a) for x in range(0,xmax+1)]
     getF = lambda bitstr : f[rep.to_num(bitstr)]
 
     b = rep.num_bits()
@@ -113,6 +115,10 @@ def theoreticalProbability(P, g, alpha = None, n = 10000000):
     for i in range(len(P)):
         prob += alpha[i]*Pn[i][g]
 
+    # long term distribution
+    # print("Long term distribution")
+    # print(np.dot(np.array(alpha), Pn)) 
+
     return prob
 
 
@@ -136,6 +142,10 @@ def theoreticalProbabilityWithTemp(rep, a, alpha = None, n = 10000):
     for i in range(n):
         currP = np.matmul(currP, initTmatTemperature(rep,a,T_0*(coolRate)**i)[0])
 
+    # # long term distribution
+    # print("Long term distribution")
+    # print(np.dot(np.array(alpha), currP))
+
     prob = 0
     for i in range(len(currP)):
         prob += alpha[i]*currP[i][g]
@@ -148,9 +158,11 @@ def main(rep, a):
     print()
     prob = theoreticalProbabilityWithTemp(rep, a)
     print("With temperature", prob) # with temp
+    print()
     P,g = buildTmat(rep,a)
     prob = theoreticalProbability(P,g)
     print("Without temperature", prob) #without temp
+
 
 
 

@@ -8,6 +8,8 @@ Implementation of an interface between the lower level representations and real 
 from sympy.combinatorics.graycode import GrayCode 
 import math
 import random
+import itertools
+
 
 class Representation:
     """
@@ -22,8 +24,21 @@ class Representation:
     def to_num(self, bitstr):
         return self._rep[bitstr]
 
+    def get_rep(self):
+        return self._rep
+
     def to_bitstr(self, num):
         return self._invRep[num]
+
+    def get_neighbors(self, bitstr):
+        """
+        returns list of hamming neighbors of bitstr
+        """
+        flip = lambda b: "1" if b == "0" else "0"
+        neighbs = []
+        for i in range(len(bitstr)):
+            neighbs.append(bitstr[:i] + flip(bitstr[i]) + bitstr[i+1:])
+        return neighbs 
 
     def num_bits(self):
         return len(next(iter(self._rep)))
@@ -119,7 +134,7 @@ def generateGrayRepresentation(interval):
     b = numBitsToEncodeInterval(interval)
     gc = list(GrayCode(b).generate_gray())
     grayRep = initializeEncodings(gc, interval)
-    return Representation(grayRep, "gray")
+    return Representation(grayRep, "binary reflected gray")
 
 
 
@@ -136,6 +151,70 @@ def generateBinaryRepresentation(interval):
     binRep = initializeEncodings(bc, interval)
     return Representation(binRep, "binary")
 
+def generateModifiedBinaryRepresentation(interval):
+    b = numBitsToEncodeInterval(interval)
+    bc = []
+    for i in range(0,2**b):
+        binstr = bin(i)[2:]
+        bc.append(('0'*(b-len(binstr))+binstr))
+    s1 = random.randrange(0,len(bc) - 1)
+    s2 = random.randrange(0,len(bc)-1)
+    bc[s1],bc[s2] = bc[s2], bc[s1]
+    binRep = initializeEncodings(bc, interval)
+    return Representation(binRep, "binary")
+
+def generateRandomRepresentation(interval, name = 'r'):
+    """
+    returns a random mapping between bitstrings to numbers in the interval
+    """
+    b = numBitsToEncodeInterval(interval)
+    c = list(GrayCode(b).generate_gray())
+    random.shuffle(c)
+    randRep = initializeEncodings(c, interval)
+    return Representation(randRep, name)
+
+
+def generateWorstRepresentation(nbits, name = 'w'):
+    """
+    returns an encoding on nbits that has the worst locality using Harpers algorithm.
+    """
+    b = nbits
+    c = list(GrayCode(b).generate_gray())
+    rep = {}
+    startstr = random.choice(c)
+    parity = startstr.count("1") % 2
+    rep[startstr] = 0
+
+    sameParity = list(filter(lambda x: x.count("1")%2 == parity, c))
+    sameParity.remove(startstr)
+    random.shuffle(sameParity)
+
+    oppParity = list(filter(lambda x: x.count("1")%2 != parity, c))
+    random.shuffle(oppParity)
+
+    assert(len(sameParity) + 1 + len(oppParity) == len(c))
+
+    for i in range(len(sameParity)):
+        rep[sameParity[i]] = i + 1
+
+    for i in range(len(oppParity)):
+        rep[oppParity[i]] = i + 2**(b-1)
+
+    rp = Representation(rep, name)
+
+    return Representation(rep, name)
+    
+
+def generateAllReps(numbits):
+    """
+    returns a list of all representations on numbits bits
+    """
+    c = list(GrayCode(numbits).generate_gray())
+    reps = []
+    for perm in list(itertools.permutations(c)):
+        reps.append(Representation(initializeEncodings(perm, (0, (2**numbits)-1, 1)), 'name'))
+    return reps
+
 
 
 def generateCustomRepresentation(interval):
@@ -145,5 +224,113 @@ def generateCustomRepresentation(interval):
     """
     pass  
 
-# br = generateBinaryRepresentation((0,1023,1))
-# print(br.num_bits())
+
+def countOptima(perm, key = min):
+    """
+    Counts number of optima (by key = max or min) in a permutation with neighborhood = 2 
+    """
+    opt = 0
+    for p in range(len(perm)):
+        if key(perm[p], perm[(p+1) % len(perm)]) == perm[p] and key(perm[p], perm[(p-1) % len(perm)]) == perm[p]:
+            opt+=1
+    return opt
+
+
+def allOptimaBitstring(perm, rep, key = max):
+    """
+    Returns list of local optima -- induced optima (min or max) -- given a function perm and the bitstring representation (neighborhood = len of bitstring)
+    perm is the function inducing optima in the bitstrings, as a list
+    rep is a representation obj
+    """
+
+    flip = lambda x: '1' if x == '0' else '0'
+
+    optima = 0
+    rmap = rep.get_rep()
+    optlist = []
+  
+    for b in list(rmap.keys()): 
+        # neighbors, including itself
+        neighbs = [b[:i] + flip(b[i]) + b[i+1:] for i in range(len(b))]
+        opts = [perm[rep.to_num(nb)] <= perm[rep.to_num(b)] for nb in neighbs]
+        if all(opts):
+            optlist.append(b)
+        
+    return optlist
+
+def countOptimaBitstring(perm, rep, key=max):
+    """
+    Counts the number of induced optima (min or max) given a function perm and the bitstring representation (neighborhood = len of bitstring)
+    perm is the function inducing optima in the bitstrings, as a list
+    rep is a representation obj
+    """
+    return len(allOptimaBitstring(perm,rep,key))
+
+
+def optimaFitMetric(a, rep, key = max):
+    """
+    Metric that computes average fitness difference between local optima and their neighbors.
+    a = a value
+    rep = rep object
+    """
+    perm =  [a - abs(x - a) for x in range(0,2**rep.num_bits())]
+    optlist = allOptimaBitstring(perm, rep, key)
+    globalopt = rep.to_bitstr(a)
+    optlist.remove(globalopt)
+    if optlist == []:
+        return 0
+    s = 0
+    
+    for i in range(len(optlist)):
+        for neighb in rep.get_neighbors(optlist[i]):
+            s += abs(perm[rep.to_num(optlist[i])] - perm[rep.to_num(neighb)])
+
+    for neighb in rep.get_neighbors(globalopt):
+        s -= abs(a - perm[rep.to_num(neighb)])
+    return s/(len(optlist)*len(globalopt))
+
+
+
+
+def findOneMaxA(rep1, rep2, b):
+    """
+    Finds all a values such that the induced number of maxima in rep1 is less than the 
+    induced number of maxima in rep2
+    """
+    avals = []
+    perms = [[(2**(b)-1) - abs(x - a) for x in range(2**b)] for a in range(2**b)]
+    a = 0
+    for perm in perms: 
+        b1 = countOptimaBitstring(perm, rep1, max)
+        b2 = countOptimaBitstring(perm, rep2, max)
+        print(b1, b2)
+        if b1 <= b2:
+            avals.append(a)
+        a += 1
+
+    return avals
+
+def eitanify(rep):
+    """
+    Rewrites a representation in Eitan's notation
+    The  format is a list of integers, where l[i] is the number that the bitstring (when written in binary, represent i) maps to
+    """
+    binrep = generateBinaryRepresentation((0,2**rep.num_bits()  - 1, 1)).get_rep().keys()
+    rep = rep.get_rep()
+    return [rep[b] for b in binrep]
+
+def uneitanify(rep, name = ''):
+    """
+    Rewrites a rep in dict (rep object) notation from Eitan's notation
+    """
+    d = {}
+    lenb = int(math.log(len(rep), 2))
+    for i in range(len(rep)):
+        x = bin(i)[2:]
+        x = '0'*(lenb - len(x)) + x
+        d[x] = rep[i]
+    return Representation(d, name)
+
+
+
+
