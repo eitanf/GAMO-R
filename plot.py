@@ -2,7 +2,7 @@
 Author: Hrishee Shastri
 May 2019
 
-Plotting fitness vs generation number of GAs
+General purpose plotting module
 
 Runs with the same optimizing function but different encodings will be shown on the same plot,
 to see how different encodings compare
@@ -51,19 +51,23 @@ class Graph:
 
 
 
-def plot(graphs, title, x_axis, y_axis, fig):
+def plot(graphs, title, x_axis, y_axis, fig, scatter = False):
     """
     graphs -- a list of Graph objects to plot on the same plane
     title -- string title for graph
     x_axis -- string label for x axis
     y_axis -- string label for y axis
     fig -- figure number
+    scatter -- whether points should be connected (False) or not (True)
     """
     plt.figure(fig)
     for g in graphs:
         xs = g.get_Xs()
         ys = g.get_Ys()
-        plt.plot(xs, ys, label = g.get_label(), linestyle = 'dashed')
+        if not scatter:
+            plt.plot(xs, ys, label = g.get_label(), linestyle = 'solid') 
+        else:
+            plt.scatter(xs, ys)
 
     plt.xlabel(x_axis)
     plt.ylabel(y_axis)
