@@ -15,7 +15,7 @@ have a series of 1000 Bernoulli trials.
 import random
 import matplotlib.pyplot as plt
 # G_d is a graph of d disconnected triangle subgraphs
-# Represent G_d as list of directed edges in [u,v] notation
+# Represent G_d as list of undirected edges in [u,v] notation
 # This ensures the edges are ordered
 
 def generate_G(d):
