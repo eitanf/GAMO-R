@@ -1,4 +1,4 @@
-set term post eps color 14
+set term post eps color 18
 
 set key bottom right
 set colorsequence podo
@@ -8,13 +8,13 @@ set ylabel "Percentage of optimal solutions"
 set out "SA-a-15.eps"
 set title "a=15"
 plot "SB a=15.dat" using 1:(100*$2) with lines lw 1 dt 1 title "Standard binary (SB)", \
-     "BRG a=15.dat" using 1:(100*$2) with lines lw 4 dt 2 title "Binary-reflected Gray (BRG)", \
-     "NGG a=15.dat" using 1:(100*$2) with lines lw 2 dt 3 title "Non-greedy Gray (NGG)", \
-     "UBL a=15.dat" using 1:(100*$2) with lines lw 3 dt 4 title "Upper-bound locality (UBL)"
+     "BRG a=15.dat" using 1:(100*$2) with lines lw 5 dt 2 title "Binary-reflected Gray (BRG)", \
+     "NGG a=15.dat" using 1:(100*$2) with lines lw 3 dt 3 title "Non-greedy Gray (NGG)", \
+     "UBL a=15.dat" using 1:(100*$2) with lines lw 4 dt 4 title "Upper-bound locality (UBL)"
 
 set out "SA-a-31.eps"
 set title "a=31"
 plot "SB a=31.dat" using 1:(100*$2) with lines lw 1 dt 1 title "Standard binary (SB)", \
-     "BRG a=31.dat" using 1:(100*$2) with lines lw 4 dt 2 title "Binary-reflected Gray (BRG)", \
-     "NGG a=31.dat" using 1:(100*$2) with lines lw 2 dt 3 title "Non-greedy Gray (NGG)", \
-     "UBL a=31.dat" using 1:(100*$2) with lines lw 3 dt 4 title "Upper-bound locality (UBL)"
+     "BRG a=31.dat" using 1:(100*$2) with lines lw 5 dt 2 title "Binary-reflected Gray (BRG)", \
+     "NGG a=31.dat" using 1:(100*$2) with lines lw 3 dt 3 title "Non-greedy Gray (NGG)", \
+     "UBL a=31.dat" using 1:(100*$2) with lines lw 4 dt 4 title "Upper-bound locality (UBL)"
