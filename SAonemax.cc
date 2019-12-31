@@ -194,11 +194,15 @@ const std::vector<phenotype_t> two_maxima =   { 7, 2, 0, 5, 1, 6, 4, 3 };
 const std::vector<phenotype_t> three_maxima = { 0, 5, 4, 7, 1, 3, 6, 2 };
 const std::vector<phenotype_t> four_maxima =  { 5, 7, 6, 4, 1, 3, 2, 0 };
 const std::vector<phenotype_t> different_four_maxima =  { 3, 7, 0, 2, 1, 4, 5, 6 };
+//
 // "Worst" representation for len=5, a = 15
 const std::vector<phenotype_t> five_worst =
   { 4, 30, 29, 13, 24, 8, 2, 18, 21, 15, 10, 25, 14, 31, 17, 1,
     28, 9, 3, 27, 7, 20, 16, 5, 0, 23, 26, 6, 19, 12, 11, 22 };
-
+// "Non-greedy Gray encoding" for len=5:
+const std::vector<phenotype_t> five_ngg =
+  { 0, 1, 19, 2, 31, 28, 20, 3, 23, 26, 24, 25, 22, 27, 21, 4,
+    13, 14, 18, 15, 30, 29, 17, 16,12, 9, 11, 10, 7, 8, 6, 5 };
 
 /////////////////////////////////////////////////////////////////////////////
 // Fitness functions for the one-max problem: given an 'a' value and a
@@ -226,11 +230,11 @@ void usage()
 
 int main(int argc, char* argv[])
 {
-  const size_t len = 3;  // How many bits per organism? CHANGE TO 5 FOR FIVE BITS
+  const size_t len = 5;  // How many bits per organism?
   int a = (1 << len) - 1;   // Value to maximize to
   int popsize = 1;    // How many organisms per SA?
-  unsigned generations = 20; // How many fitness evaluations to run for?
-  unsigned experiments = 1000;  // How many different SAs to average over?
+  unsigned generations = 2000; // How many fitness evaluations to run for?
+  unsigned experiments = 100000;  // How many different SAs to average over?
 
   if (argc == 1) {
     usage();
@@ -248,8 +252,8 @@ int main(int argc, char* argv[])
     experiments = atoi(argv[4]);
   }
 
-  const auto rep = [](const bits_t& bits){ return explicit_rep(bits, four_maxima); };
-  //const auto rep = [](const bits_t& bits){ return std_binary_rep(bits); };
+  //const auto rep = [](const bits_t& bits){ return explicit_rep(bits, five_ngg); };
+  const auto rep = [](const bits_t& bits){ return brg_rep(bits); };
   const auto fit = [=](const bits_t& bits) { return onemax(a, rep, bits); };
   const auto maxfit = (1 << len) - 1;
 
@@ -268,12 +272,12 @@ int main(int argc, char* argv[])
       sims[i].generation();
     });
 
-    
-    // for (auto& sim : sims) {
-    //   opt_count += sim.num_optimal(maxfit);
-    //   sim.generation();
-    // }
-    
+/* Sequential version, if TBB is missing:
+     for (auto& sim : sims) {
+       opt_count += sim.num_optimal(maxfit);
+       sim.generation();
+     }
+     */
 
     std::cout << g << "\t";
     std::cout << double(opt_count) / (experiments * popsize) << "\n";
