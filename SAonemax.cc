@@ -194,11 +194,18 @@ const std::vector<phenotype_t> two_maxima =   { 7, 2, 0, 5, 1, 6, 4, 3 };
 const std::vector<phenotype_t> three_maxima = { 0, 5, 4, 7, 1, 3, 6, 2 };
 const std::vector<phenotype_t> four_maxima =  { 5, 7, 6, 4, 1, 3, 2, 0 };
 const std::vector<phenotype_t> different_four_maxima =  { 3, 7, 0, 2, 1, 4, 5, 6 };
-//
-// "Worst" representation for len=5, a = 15
+
+// "Worst" representation for len=5, a=15
 const std::vector<phenotype_t> five_worst =
   { 4, 30, 29, 13, 24, 8, 2, 18, 21, 15, 10, 25, 14, 31, 17, 1,
     28, 9, 3, 27, 7, 20, 16, 5, 0, 23, 26, 6, 19, 12, 11, 22 };
+
+
+// Yet another "Worst" representation for len=5, a=15
+const std::vector<phenotype_t> five_ubl =
+  { 24, 1, 4, 19, 15, 16, 21, 13, 9, 26, 18, 0, 23, 12, 6, 22,
+    3, 28, 20, 14, 30, 7, 5, 27, 29, 10, 8, 31, 2, 17, 25, 11 };
+
 // "Non-greedy Gray encoding" for len=5:
 const std::vector<phenotype_t> five_ngg =
   { 0, 1, 19, 2, 31, 28, 20, 3, 23, 26, 24, 25, 22, 27, 21, 4,
@@ -252,8 +259,8 @@ int main(int argc, char* argv[])
     experiments = atoi(argv[4]);
   }
 
-  //const auto rep = [](const bits_t& bits){ return explicit_rep(bits, five_ngg); };
-  const auto rep = [](const bits_t& bits){ return brg_rep(bits); };
+  const auto rep = [](const bits_t& bits){ return explicit_rep(bits, five_ubl); };
+  //const auto rep = [](const bits_t& bits){ return brg_rep(bits); };
   const auto fit = [=](const bits_t& bits) { return onemax(a, rep, bits); };
   const auto maxfit = (1 << len) - 1;
 
