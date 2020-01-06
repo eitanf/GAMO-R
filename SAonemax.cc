@@ -259,8 +259,10 @@ int main(int argc, char* argv[])
     experiments = atoi(argv[4]);
   }
 
+  //const auto rep = [](const bits_t& bits){ return explicit_rep(bits, five_ngg); };
   const auto rep = [](const bits_t& bits){ return explicit_rep(bits, five_ubl); };
   //const auto rep = [](const bits_t& bits){ return brg_rep(bits); };
+  //const auto rep = [](const bits_t& bits){ return std_binary_rep(bits); };
   const auto fit = [=](const bits_t& bits) { return onemax(a, rep, bits); };
   const auto maxfit = (1 << len) - 1;
 
@@ -271,23 +273,28 @@ int main(int argc, char* argv[])
   }
 
 
-  std::cout << "# Generation  ratio_optimal\n";
+  std::cout << "# Generation\tratio_optimal\tmean_fitness\n";
   for (unsigned g = 0; g < generations; ++g) {
     std::atomic<unsigned> opt_count = 0;
+    std::atomic<uint64_t> sum_fitness = 0;
+
     parallel_for(size_t(0), sims.size(), [&](size_t i) {
       opt_count += sims[i].num_optimal(maxfit);
+      sum_fitness += sims[i].fitness();
       sims[i].generation();
     });
 
 /* Sequential version, if TBB is missing:
      for (auto& sim : sims) {
        opt_count += sim.num_optimal(maxfit);
+      sum_fitness += sim.fitness();
        sim.generation();
      }
-     */
+*/
 
     std::cout << g << "\t";
-    std::cout << double(opt_count) / (experiments * popsize) << "\n";
+    std::cout << double(opt_count) / (experiments * popsize) << "\t";
+    std::cout << double(sum_fitness) / (experiments * popsize) << "\n";
   }
   return 0;
 }
