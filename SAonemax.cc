@@ -260,9 +260,9 @@ int main(int argc, char* argv[])
   }
 
   //const auto rep = [](const bits_t& bits){ return explicit_rep(bits, five_ngg); };
-  const auto rep = [](const bits_t& bits){ return explicit_rep(bits, five_ubl); };
+  //const auto rep = [](const bits_t& bits){ return explicit_rep(bits, five_ubl); };
   //const auto rep = [](const bits_t& bits){ return brg_rep(bits); };
-  //const auto rep = [](const bits_t& bits){ return std_binary_rep(bits); };
+  const auto rep = [](const bits_t& bits){ return std_binary_rep(bits); };
   const auto fit = [=](const bits_t& bits) { return onemax(a, rep, bits); };
   const auto maxfit = (1 << len) - 1;
 

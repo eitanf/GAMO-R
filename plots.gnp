@@ -1,22 +1,36 @@
 # Gnuplot script to create the plots for the paper from raw data files (in TSV format)
 set term post eps color 18
 
-set key bottom right
 set colorsequence podo
+set style line 1 lc 2 lw 3 dt 1
+set style line 2 lc 13 lw 3 dt 2
+set style line 3 lc 7 lw 1 dt 5
+set style line 4 lc 5 lw 2 dt 4
+
+set key bottom right
 set xlabel "Generation"
 set ylabel "Percentage of optimal solutions"
 
 set out "SA-a-31.eps"
 set title "a=31"
-plot "SB a=31.dat" using 1:(100*$2) with lines lw 1 dt 1 title "Standard binary (SB)", \
-     "BRG a=31.dat" using 1:(100*$2) with lines lw 5 dt 2 title "Binary-reflected Gray (BRG)", \
-     "NGG a=31.dat" using 1:(100*$2) with lines lw 3 dt 3 title "Non-greedy Gray (NGG)", \
-     "UBL a=31.dat" using 1:(100*$2) with lines lw 4 dt 4 title "Upper-bound locality (UBL)"
+plot "SB a=31.dat"  using 1:(100*$2) with lines ls 1 title "Standard binary (SB)", \
+     "BRG a=31.dat" using 1:(100*$2) with lines ls 2 title "Binary-reflected Gray (BRG)", \
+     "NGG a=31.dat" using 1:(100*$2) with lines ls 3 title "Non-greedy Gray (NGG)", \
+     "UBL a=31.dat" using 1:(100*$2) with lines ls 4 title "Upper-bound locality (UBL)"
 
 set key bottom right
 set out "SA-a-15.eps"
 set title "a=15"
-plot "NGG a=15.dat" using 1:(100*$2) with lines lw 1 dt 1 title "Non-greedy Gray (NGG)", \
-     "BRG a=15.dat" using 1:(100*$2) with lines lw 5 dt 2 title "Binary-reflected Gray (BRG)", \
-     "UBL a=15.dat" using 1:(100*$2) with lines lw 4 dt 4 title "Upper-bound locality (UBL)", \
-     "SB a=15.dat" using 1:(100*$2) with lines lw 3 dt 3 title "Standard Binary (SB)"
+plot "NGG a=15.dat" using 1:(100*$2) with lines ls 3 title "Non-greedy Gray (NGG)", \
+     "BRG a=15.dat" using 1:(100*$2) with lines ls 2 title "Binary-reflected Gray (BRG)", \
+     "UBL a=15.dat" using 1:(100*$2) with lines ls 4 title "Upper-bound locality (UBL)", \
+     "SB a=15.dat"  using 1:(100*$2) with lines ls 1 title "Standard Binary (SB)"
+
+
+set key bottom right
+set out "SA-comparison.eps"
+#set title "Fitness over time"
+set notitle
+set ylabel "Mean fitness score"
+plot "SB a=26.dat"  using 1:3 w l ls 1 title "SB, a=26", \
+     "UBL a=16.dat" using 1:3 w l ls 4 title "UBL, a=16"
