@@ -2,10 +2,10 @@
 set term post eps color 18
 
 set colorsequence podo
-set style line 1 lc 2 lw 3 dt 1
-set style line 2 lc 13 lw 3 dt 2
-set style line 3 lc 7 lw 1 dt 5
-set style line 4 lc 5 lw 2 dt 4
+set style line 1 lc rgb "purple" lw 1 dt 1
+set style line 2 lc rgb "turquoise" lw 3 dt 2
+set style line 3 lc rgb "gold" lw 3 dt 5
+set style line 4 lc rgb "sienna1" lw 2 dt 4
 
 set key bottom right
 set xlabel "Generation"
@@ -34,3 +34,48 @@ set notitle
 set ylabel "Mean fitness score"
 plot "SB a=26.dat"  using 1:3 w l ls 1 title "SB, a=26", \
      "UBL a=16.dat" using 1:3 w l ls 4 title "UBL, a=16"
+
+
+set term post eps color 32
+set out "f1.eps"
+set title "f1"
+set ylabel "Mean best fitness score"
+set key top right
+set xrange [1:20]
+plot "BIN_f1.dat" w lp ls 1 title "SB", \
+     "BRG_f1.dat" w lp ls 2 title "BRG", \
+     "NGG_f1.dat" w lp ls 3 title "BRG", \
+     "UBL_f1.dat" w lp ls 4 title "UBL"
+
+
+set out "f2.eps"
+set title "f2"
+set ylabel ""
+set key off
+plot "BIN_f2.dat" w lp ls 1 title "SB", \
+     "BRG_f2.dat" w lp ls 2 title "BRG", \
+     "NGG_f2.dat" w lp ls 3 title "BRG", \
+     "UBL_f2.dat" w lp ls 4 title "UBL"
+
+
+set out "f3.eps"
+set title "f3"
+plot "BIN_f3.dat" w lp ls 1 title "SB", \
+     "BRG_f3.dat" w lp ls 2 title "BRG", \
+     "NGG_f3.dat" w lp ls 3 title "BRG", \
+     "UBL_f3.dat" w lp ls 4 title "UBL"
+
+
+set out "f4.eps"
+set title "f4"
+plot "BIN_f4.dat" w lp ls 1 title "SB", \
+     "BRG_f4.dat" w lp ls 2 title "BRG", \
+     "NGG_f4.dat" w lp ls 3 title "BRG", \
+     "UBL_f4.dat" w lp ls 4 title "UBL"
+
+set out "f5.eps"
+set title "f5"
+plot "BIN_f5.dat" w lp ls 1 title "SB", \
+     "BRG_f5.dat" w lp ls 2 title "BRG", \
+     "NGG_f5.dat" w lp ls 3 title "BRG", \
+     "UBL_f3.dat" w lp ls 4 title "UBL"
