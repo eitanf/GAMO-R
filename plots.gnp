@@ -78,4 +78,4 @@ set title "f5"
 plot "BIN_f5.dat" w lp ls 1 title "SB", \
      "BRG_f5.dat" w lp ls 2 title "BRG", \
      "NGG_f5.dat" w lp ls 3 title "BRG", \
-     "UBL_f3.dat" w lp ls 4 title "UBL"
+     "UBL_f5.dat" w lp ls 4 title "UBL"
