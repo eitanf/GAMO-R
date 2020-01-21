@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
-%%Title: f4.eps
-%%Creator: gnuplot 5.0 patchlevel 3
-%%CreationDate: Sun Jan 19 16:30:40 2020
+%%Title: graphs/f2.eps
+%%Creator: gnuplot 5.2 patchlevel 2
+%%CreationDate: Tue Jan 21 13:32:51 2020
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -429,15 +429,27 @@ Level1 {Level1PatternFill} {Level2PatternFill} ifelse
 dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
 currentdict end definefont pop
 %
+/Metrics {ExtendTextBox Gswidth} def
+/Lwidth {currentpoint stroke M 0 vshift R Metrics} def
+/Rwidth {currentpoint stroke M dup stringwidth pop neg vshift R Metrics} def
+/Cwidth {currentpoint stroke M dup stringwidth pop -2 div vshift R Metrics} def
+/GLwidth {currentpoint stroke M 0 vshift R {ExtendTextBox} forall} def
+/GRwidth {currentpoint stroke M dup Gwidth vshift R {ExtendTextBox} forall} def
+/GCwidth {currentpoint stroke M dup Gwidth 2 div vshift R {ExtendTextBox} forall} def
+/GLwidth2 {0 Gwidth AddGlyphWidth} def
+/GRwidth2 {Gwidth -1 mul 0 AddGlyphWidth} def
+/GCwidth2 {Gwidth 2 div dup -1 mul AddGlyphWidth} def
+/AddGlyphWidth { dup TBx2 gt {userdict /TBx2 3 -1 roll put} {pop} ifelse
+                 dup TBx1 lt {userdict /TBx1 3 -1 roll put} {pop} ifelse } def
 /MFshow {
    { dup 5 get 3 ge
      { 5 get 3 eq {gsave} {grestore} ifelse }
      {dup dup 0 get findfont exch 1 get scalefont setfont
      [ currentpoint ] exch dup 2 get 0 exch R dup 5 get 2 ne {dup dup 6
-     get exch 4 get {textshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
+     get exch 4 get {textshow} {Metrics pop 0 R} ifelse }if dup 5 get 0 eq
      {dup 3 get {2 get neg 0 exch R pop} {pop aload pop M} ifelse} {dup 5
-     get 1 eq {dup 2 get exch dup 3 get exch 6 get stringwidth pop -2 div
-     dup 0 R} {dup 6 get stringwidth pop -2 div 0 R 6 get
+     get 1 eq {dup 2 get exch dup 3 get exch 6 get Gswidth pop -2 div
+     dup 0 R} {dup 6 get Gswidth pop -2 div 0 R 6 get
      textshow 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
      pop aload pop M} ifelse }ifelse }ifelse }
      ifelse }
@@ -464,44 +476,41 @@ systemdict /pdfmark known not {
   userdict /pdfmark systemdict /cleartomark get put
 } if
 SDict begin [
-  /Title (f4.eps)
+  /Title (graphs/f2.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 5.0 patchlevel 3)
-  /Author (eitan)
+  /Creator (gnuplot 5.2 patchlevel 2)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Sun Jan 19 16:30:40 2020)
+  /CreationDate (Tue Jan 21 13:32:51 2020)
   /DOCINFO pdfmark
 end
 } ifelse
 %
-% Support for boxed text - Ethan A Merritt May 2005
+% Support for boxed text - Ethan A Merritt Sep 2016
 %
 /InitTextBox { userdict /TBy2 3 -1 roll put userdict /TBx2 3 -1 roll put
            userdict /TBy1 3 -1 roll put userdict /TBx1 3 -1 roll put
 	   /Boxing true def } def
-/ExtendTextBox { Boxing
-    { gsave dup false charpath pathbbox
+/ExtendTextBox { dup type /stringtype eq
+    { Boxing { gsave dup false charpath pathbbox
       dup TBy2 gt {userdict /TBy2 3 -1 roll put} {pop} ifelse
       dup TBx2 gt {userdict /TBx2 3 -1 roll put} {pop} ifelse
       dup TBy1 lt {userdict /TBy1 3 -1 roll put} {pop} ifelse
       dup TBx1 lt {userdict /TBx1 3 -1 roll put} {pop} ifelse
-      grestore } if } def
+      grestore } if }
+    {} ifelse} def
 /PopTextBox { newpath TBx1 TBxmargin sub TBy1 TBymargin sub M
                TBx1 TBxmargin sub TBy2 TBymargin add L
 	       TBx2 TBxmargin add TBy2 TBymargin add L
 	       TBx2 TBxmargin add TBy1 TBymargin sub L closepath } def
 /DrawTextBox { PopTextBox stroke /Boxing false def} def
-/FillTextBox { gsave PopTextBox 1 1 1 setrgbcolor fill grestore /Boxing false def} def
+/FillTextBox { gsave PopTextBox fill grestore /Boxing false def} def
 0 0 0 0 InitTextBox
 /TBxmargin 20 def
 /TBymargin 20 def
 /Boxing false def
 /textshow { ExtendTextBox Gshow } def
 %
-% redundant definitions for compatibility with prologue.ps older than 5.0.2
-/LTB {BL [] LCb DL} def
-/LTb {PL [] LCb DL} def
 end
 %%EndProlog
 %%Page: 1 1
@@ -523,7 +532,7 @@ LCb setrgbcolor
 -63 0 V
 stroke
 1056 1024 M
-[ [(Helvetica) 320.0 0.0 true true 0 ( 20)]
+[ [(Helvetica) 320.0 0.0 true true 0 ( 0)]
 ] -106.7 MRshow
 1.000 UL
 LTb
@@ -534,7 +543,7 @@ LCb setrgbcolor
 -63 0 V
 stroke
 1056 1363 M
-[ [(Helvetica) 320.0 0.0 true true 0 ( 30)]
+[ [(Helvetica) 320.0 0.0 true true 0 ( 0.2)]
 ] -106.7 MRshow
 1.000 UL
 LTb
@@ -545,7 +554,7 @@ LCb setrgbcolor
 -63 0 V
 stroke
 1056 1703 M
-[ [(Helvetica) 320.0 0.0 true true 0 ( 40)]
+[ [(Helvetica) 320.0 0.0 true true 0 ( 0.4)]
 ] -106.7 MRshow
 1.000 UL
 LTb
@@ -556,7 +565,7 @@ LCb setrgbcolor
 -63 0 V
 stroke
 1056 2042 M
-[ [(Helvetica) 320.0 0.0 true true 0 ( 50)]
+[ [(Helvetica) 320.0 0.0 true true 0 ( 0.6)]
 ] -106.7 MRshow
 1.000 UL
 LTb
@@ -567,7 +576,7 @@ LCb setrgbcolor
 -63 0 V
 stroke
 1056 2382 M
-[ [(Helvetica) 320.0 0.0 true true 0 ( 60)]
+[ [(Helvetica) 320.0 0.0 true true 0 ( 0.8)]
 ] -106.7 MRshow
 1.000 UL
 LTb
@@ -578,7 +587,7 @@ LCb setrgbcolor
 -63 0 V
 stroke
 1056 2721 M
-[ [(Helvetica) 320.0 0.0 true true 0 ( 70)]
+[ [(Helvetica) 320.0 0.0 true true 0 ( 1)]
 ] -106.7 MRshow
 1.000 UL
 LTb
@@ -589,7 +598,7 @@ LCb setrgbcolor
 -63 0 V
 stroke
 1056 3061 M
-[ [(Helvetica) 320.0 0.0 true true 0 ( 80)]
+[ [(Helvetica) 320.0 0.0 true true 0 ( 1.2)]
 ] -106.7 MRshow
 1.000 UL
 LTb
@@ -600,7 +609,7 @@ LCb setrgbcolor
 -63 0 V
 stroke
 1056 3400 M
-[ [(Helvetica) 320.0 0.0 true true 0 ( 90)]
+[ [(Helvetica) 320.0 0.0 true true 0 ( 1.4)]
 ] -106.7 MRshow
 1.000 UL
 LTb
@@ -611,7 +620,7 @@ LCb setrgbcolor
 -63 0 V
 stroke
 1056 3740 M
-[ [(Helvetica) 320.0 0.0 true true 0 ( 100)]
+[ [(Helvetica) 320.0 0.0 true true 0 ( 1.6)]
 ] -106.7 MRshow
 1.000 UL
 LTb
@@ -622,7 +631,7 @@ LCb setrgbcolor
 -63 0 V
 stroke
 1056 4079 M
-[ [(Helvetica) 320.0 0.0 true true 0 ( 110)]
+[ [(Helvetica) 320.0 0.0 true true 0 ( 1.8)]
 ] -106.7 MRshow
 1.000 UL
 LTb
@@ -759,190 +768,190 @@ LCb setrgbcolor
 LTb
 LCb setrgbcolor
 3935 4559 M
-[ [(Helvetica) 320.0 0.0 true true 0 (f4)]
+[ [(Helvetica) 320.0 0.0 true true 0 (f2)]
 ] -106.7 MCshow
 % Begin plot #1
 1.000 UP
 1.000 UL
 LTb
-0.75 0.50 1.00 C 1248 3762 M
-283 -378 V
-283 -339 V
-283 -284 V
-283 -245 V
-282 -216 V
-283 -186 V
-283 -151 V
-283 -132 V
-283 -114 V
-283 -108 V
-283 -94 V
-283 -81 V
-283 -70 V
-283 -65 V
-282 -54 V
-283 -50 V
-283 -48 V
+0.75 0.50 1.00 C 1248 3844 M
+283 -934 V
+283 -541 V
+283 -318 V
+283 -220 V
+282 -142 V
+283 -92 V
+283 -78 V
+283 -72 V
 283 -40 V
-283 -41 V
-1248 3762 Pls
-1531 3384 Pls
-1814 3045 Pls
-2097 2761 Pls
-2380 2516 Pls
-2662 2300 Pls
-2945 2114 Pls
-3228 1963 Pls
-3511 1831 Pls
-3794 1717 Pls
-4077 1609 Pls
-4360 1515 Pls
-4643 1434 Pls
-4926 1364 Pls
-5209 1299 Pls
-5491 1245 Pls
-5774 1195 Pls
-6057 1147 Pls
-6340 1107 Pls
-6623 1066 Pls
+283 -42 V
+283 -35 V
+283 -20 V
+283 -25 V
+283 -17 V
+282 -11 V
+283 -12 V
+283 -10 V
+283 -8 V
+283 -7 V
+1248 3844 Pls
+1531 2910 Pls
+1814 2369 Pls
+2097 2051 Pls
+2380 1831 Pls
+2662 1689 Pls
+2945 1597 Pls
+3228 1519 Pls
+3511 1447 Pls
+3794 1407 Pls
+4077 1365 Pls
+4360 1330 Pls
+4643 1310 Pls
+4926 1285 Pls
+5209 1268 Pls
+5491 1257 Pls
+5774 1245 Pls
+6057 1235 Pls
+6340 1227 Pls
+6623 1220 Pls
 % End plot #1
 % Begin plot #2
 1.000 UP
 3.000 UL
 LTb
 LT1
-0.25 0.88 0.82 C 1248 3770 M
-283 -375 V
-283 -334 V
-283 -277 V
-283 -236 V
-282 -202 V
-283 -176 V
-283 -146 V
-283 -135 V
-283 -117 V
-283 -97 V
-283 -88 V
-283 -79 V
-283 -69 V
-283 -61 V
-282 -60 V
-283 -47 V
-283 -50 V
-283 -41 V
-283 -39 V
-1248 3770 Crs
-1531 3395 Crs
-1814 3061 Crs
-2097 2784 Crs
-2380 2548 Crs
-2662 2346 Crs
-2945 2170 Crs
-3228 2024 Crs
-3511 1889 Crs
-3794 1772 Crs
-4077 1675 Crs
-4360 1587 Crs
-4643 1508 Crs
-4926 1439 Crs
-5209 1378 Crs
-5491 1318 Crs
-5774 1271 Crs
-6057 1221 Crs
-6340 1180 Crs
-6623 1141 Crs
+0.25 0.88 0.82 C 1248 3826 M
+283 -995 V
+283 -516 V
+283 -332 V
+283 -227 V
+282 -142 V
+283 -91 V
+283 -74 V
+283 -62 V
+283 -46 V
+283 -31 V
+283 -25 V
+283 -22 V
+283 -18 V
+283 -13 V
+282 -10 V
+283 -10 V
+283 -11 V
+283 -8 V
+283 -5 V
+1248 3826 Crs
+1531 2831 Crs
+1814 2315 Crs
+2097 1983 Crs
+2380 1756 Crs
+2662 1614 Crs
+2945 1523 Crs
+3228 1449 Crs
+3511 1387 Crs
+3794 1341 Crs
+4077 1310 Crs
+4360 1285 Crs
+4643 1263 Crs
+4926 1245 Crs
+5209 1232 Crs
+5491 1222 Crs
+5774 1212 Crs
+6057 1201 Crs
+6340 1193 Crs
+6623 1188 Crs
 % End plot #2
 % Begin plot #3
 1.000 UP
 3.000 UL
 LTb
 LT4
-1.00 0.84 0.00 C 1248 3782 M
-283 -377 V
-283 -343 V
-283 -285 V
-283 -237 V
-282 -215 V
-283 -174 V
-283 -146 V
-283 -132 V
-283 -114 V
-283 -102 V
-283 -87 V
-283 -74 V
-283 -67 V
-283 -64 V
-282 -57 V
-283 -49 V
-283 -47 V
-283 -41 V
+1.00 0.84 0.00 C 1248 3889 M
+1531 2874 L
+283 -539 V
+283 -369 V
+283 -199 V
+282 -158 V
+283 -93 V
+283 -76 V
+283 -52 V
 283 -40 V
-1248 3782 Star
-1531 3405 Star
-1814 3062 Star
-2097 2777 Star
-2380 2540 Star
-2662 2325 Star
-2945 2151 Star
-3228 2005 Star
-3511 1873 Star
-3794 1759 Star
-4077 1657 Star
-4360 1570 Star
-4643 1496 Star
-4926 1429 Star
-5209 1365 Star
-5491 1308 Star
-5774 1259 Star
-6057 1212 Star
-6340 1171 Star
-6623 1131 Star
+283 -33 V
+283 -26 V
+283 -21 V
+283 -17 V
+283 -16 V
+282 -10 V
+283 -10 V
+283 -9 V
+283 -6 V
+283 -7 V
+1248 3889 Star
+1531 2874 Star
+1814 2335 Star
+2097 1966 Star
+2380 1767 Star
+2662 1609 Star
+2945 1516 Star
+3228 1440 Star
+3511 1388 Star
+3794 1348 Star
+4077 1315 Star
+4360 1289 Star
+4643 1268 Star
+4926 1251 Star
+5209 1235 Star
+5491 1225 Star
+5774 1215 Star
+6057 1206 Star
+6340 1200 Star
+6623 1193 Star
 % End plot #3
 % Begin plot #4
 1.000 UP
 2.000 UL
 LTb
 LT3
-1.00 0.50 0.25 C 1248 3730 M
-283 -391 V
-283 -329 V
-283 -282 V
-283 -235 V
-282 -193 V
+1.00 0.50 0.25 C 1248 3296 M
+283 -795 V
+283 -393 V
+283 -243 V
 283 -169 V
-283 -147 V
-283 -126 V
-283 -97 V
-283 -95 V
-283 -84 V
-283 -71 V
-283 -64 V
-283 -60 V
-282 -52 V
-283 -45 V
-283 -44 V
-283 -36 V
-283 -37 V
-1248 3730 Box
-1531 3339 Box
-1814 3010 Box
-2097 2728 Box
-2380 2493 Box
-2662 2300 Box
-2945 2131 Box
-3228 1984 Box
-3511 1858 Box
-3794 1761 Box
-4077 1666 Box
-4360 1582 Box
-4643 1511 Box
-4926 1447 Box
-5209 1387 Box
-5491 1335 Box
-5774 1290 Box
-6057 1246 Box
-6340 1210 Box
-6623 1173 Box
+282 -104 V
+283 -72 V
+283 -63 V
+283 -50 V
+283 -35 V
+283 -30 V
+283 -23 V
+283 -23 V
+283 -17 V
+283 -13 V
+282 -15 V
+283 -10 V
+283 -9 V
+283 -8 V
+283 -9 V
+1248 3296 Box
+1531 2501 Box
+1814 2108 Box
+2097 1865 Box
+2380 1696 Box
+2662 1592 Box
+2945 1520 Box
+3228 1457 Box
+3511 1407 Box
+3794 1372 Box
+4077 1342 Box
+4360 1319 Box
+4643 1296 Box
+4926 1279 Box
+5209 1266 Box
+5491 1251 Box
+5774 1241 Box
+6057 1232 Box
+6340 1224 Box
+6623 1215 Box
 % End plot #4
 2.000 UL
 LTb

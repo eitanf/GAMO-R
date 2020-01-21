@@ -11,71 +11,71 @@ set key bottom right
 set xlabel "Generation"
 set ylabel "Percentage of optimal solutions"
 
-set out "SA-a-31.eps"
+set out "graphs/SA-a-31.eps"
 set title "a=31"
-plot "SB a=31.dat"  using 1:(100*$2) with lines ls 1 title "Standard binary (SB)", \
-     "BRG a=31.dat" using 1:(100*$2) with lines ls 2 title "Binary-reflected Gray (BRG)", \
-     "NGG a=31.dat" using 1:(100*$2) with lines ls 3 title "Non-greedy Gray (NGG)", \
-     "UBL a=31.dat" using 1:(100*$2) with lines ls 4 title "Upper-bound locality (UBL)"
+plot "results/SA_BIN_31.dat"  using 1:(100*$2) with lines ls 1 title "Standard binary (SB)", \
+     "results/SA_BRG_31.dat" using 1:(100*$2) with lines ls 2 title "Binary-reflected Gray (BRG)", \
+     "results/SA_NGG_31.dat" using 1:(100*$2) with lines ls 3 title "Non-greedy Gray (NGG)", \
+     "results/SA_UBL_31.dat" using 1:(100*$2) with lines ls 4 title "Upper-bound locality (UBL)"
 
 set key bottom right
-set out "SA-a-15.eps"
+set out "graphs/SA-a-15.eps"
 set title "a=15"
-plot "NGG a=15.dat" using 1:(100*$2) with lines ls 3 title "Non-greedy Gray (NGG)", \
-     "BRG a=15.dat" using 1:(100*$2) with lines ls 2 title "Binary-reflected Gray (BRG)", \
-     "UBL a=15.dat" using 1:(100*$2) with lines ls 4 title "Upper-bound locality (UBL)", \
-     "SB a=15.dat"  using 1:(100*$2) with lines ls 1 title "Standard Binary (SB)"
+plot "results/SA_NGG_15.dat" using 1:(100*$2) with lines ls 3 title "Non-greedy Gray (NGG)", \
+     "results/SA_BRG_15.dat" using 1:(100*$2) with lines ls 2 title "Binary-reflected Gray (BRG)", \
+     "results/SA_UBL_15.dat" using 1:(100*$2) with lines ls 4 title "Upper-bound locality (UBL)", \
+     "results/SA_BIN_15.dat"  using 1:(100*$2) with lines ls 1 title "Standard Binary (SB)"
 
 
 set key bottom right
-set out "SA-comparison.eps"
+set out "graphs/SA-comparison.eps"
 #set title "Fitness over time"
 set notitle
 set ylabel "Mean fitness score"
-plot "SB a=26.dat"  using 1:3 w l ls 1 title "SB, a=26", \
-     "UBL a=16.dat" using 1:3 w l ls 4 title "UBL, a=16"
+plot "results/SA_BIN_26.dat"  using 1:3 w l ls 1 title "SB, a=26", \
+     "results/SA_UBL_16.dat" using 1:3 w l ls 4 title "UBL, a=16"
 
 
 set term post eps color 32
-set out "f1.eps"
+set out "graphs/f1.eps"
 set title "f1"
 set ylabel "Mean best fitness score"
 set key top right
 set xrange [1:20]
-plot "BIN_f1.dat" w lp ls 1 title "SB", \
-     "BRG_f1.dat" w lp ls 2 title "BRG", \
-     "NGG_f1.dat" w lp ls 3 title "BRG", \
-     "UBL_f1.dat" w lp ls 4 title "UBL"
+plot "results/GA_BIN_f1.dat" w lp ls 1 title "SB", \
+     "results/GA_BRG_f1.dat" w lp ls 2 title "BRG", \
+     "results/GA_NGG_f1.dat" w lp ls 3 title "BRG", \
+     "results/GA_UBL_f1.dat" w lp ls 4 title "UBL"
 
 
-set out "f2.eps"
+set out "graphs/f2.eps"
 set title "f2"
 set ylabel ""
 set key off
-plot "BIN_f2.dat" w lp ls 1 title "SB", \
-     "BRG_f2.dat" w lp ls 2 title "BRG", \
-     "NGG_f2.dat" w lp ls 3 title "BRG", \
-     "UBL_f2.dat" w lp ls 4 title "UBL"
+plot "results/GA_BIN_f2.dat" w lp ls 1 title "SB", \
+     "results/GA_BRG_f2.dat" w lp ls 2 title "BRG", \
+     "results/GA_NGG_f2.dat" w lp ls 3 title "BRG", \
+     "results/GA_UBL_f2.dat" w lp ls 4 title "UBL"
 
 
-set out "f3.eps"
+set out "graphs/f3.eps"
 set title "f3"
-plot "BIN_f3.dat" w lp ls 1 title "SB", \
-     "BRG_f3.dat" w lp ls 2 title "BRG", \
-     "NGG_f3.dat" w lp ls 3 title "BRG", \
-     "UBL_f3.dat" w lp ls 4 title "UBL"
+plot "results/GA_BIN_f3.dat" w lp ls 1 title "SB", \
+     "results/GA_BRG_f3.dat" w lp ls 2 title "BRG", \
+     "results/GA_NGG_f3.dat" w lp ls 3 title "BRG", \
+     "results/GA_UBL_f3.dat" w lp ls 4 title "UBL"
 
 
-set out "f4.eps"
+set out "graphs/f4.eps"
 set title "f4"
-plot "BIN_f4.dat" w lp ls 1 title "SB", \
-     "BRG_f4.dat" w lp ls 2 title "BRG", \
-     "NGG_f4.dat" w lp ls 3 title "BRG", \
-     "UBL_f4.dat" w lp ls 4 title "UBL"
+plot "results/GA_BIN_f4.dat" w lp ls 1 title "SB", \
+     "results/GA_BRG_f4.dat" w lp ls 2 title "BRG", \
+     "results/GA_NGG_f4.dat" w lp ls 3 title "BRG", \
+     "results/GA_UBL_f4.dat" w lp ls 4 title "UBL"
 
-set out "f5.eps"
+set out "graphs/f5.eps"
 set title "f5"
-plot "BIN_f5.dat" w lp ls 1 title "SB", \
-     "BRG_f5.dat" w lp ls 2 title "BRG", \
-     "NGG_f5.dat" w lp ls 3 title "BRG", \
-     "UBL_f5.dat" w lp ls 4 title "UBL"
+plot "results/GA_BIN_f5.dat" w lp ls 1 title "SB", \
+     "results/GA_BRG_f5.dat" w lp ls 2 title "BRG", \
+     "results/GA_NGG_f5.dat" w lp ls 3 title "BRG", \
+     "results/GA_UBL_f5.dat" w lp ls 4 title "UBL"
