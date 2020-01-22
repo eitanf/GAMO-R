@@ -3,6 +3,8 @@
  * This program lets you run a simulated annealing (SA) or Evolutionary Strategies (ES)
  * optimization on the integer One-Max problem from Rothlauf's book
  * "Representations for Genetic and Evolutionary Algorithms", 2nd ed., Sec. 5.4.2.
+ * In main(), you can control all simulation parameters, including which
+ * representation to use, which fitness function, and SA/ES generations.
  * Prerequisite: Intel TBB library (libtbb-dev on debian distributions).
  * Compile with:
    g++-8 -Wall -Wextra -pedantic -O3 -march=native -std=c++17 onemax.cc  -ltbb -o onemax
@@ -254,6 +256,12 @@ onemax(const phenotype_t a, const rep_t& rep, const bits_t& bits)
   return maxfit - abs(double(phenotype) - a);
 }
 
+double
+count_ones(const phenotype_t, const rep_t&, const bits_t& bits)
+{
+  return std::accumulate(bits.cbegin(), bits.cend(), 0);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 void usage()
 {
@@ -292,8 +300,11 @@ int main(int argc, char* argv[])
   //const auto rep = [](const bits_t& bits){ return explicit_rep(bits, five_ubl); };
   //const auto rep = [](const bits_t& bits){ return brg_rep(bits); };
   const auto rep = [](const bits_t& bits){ return std_binary_rep(bits); };
+
   const auto fit = [=](const bits_t& bits) { return onemax(a, rep, bits); };
   const auto maxfit = (1 << len) - 1;
+  //const auto fit = [=](const bits_t& bits) { return count_ones(a, rep, bits); };
+  //const auto maxfit = len;
 
   std::vector<Sim> sims;
   std::vector<unsigned> gens(experiments, generations);
