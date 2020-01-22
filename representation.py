@@ -73,26 +73,18 @@ def initializeEncodings(encoding, interval):
 
     start = interval[0]
     end = interval[1]
-    step = interval[2]
+    step = interval[2] 
 
-    #number of decimal places is the max number of dp used in either start, end, or step
-    dp = max(str(start)[::-1].find('.'),str(end)[::-1].find('.'),str(step)[::-1].find('.'), 0)  
+    assert len(encoding) == round(abs((end - start)/step) + 1), "More items in the interval than there are bitstrings in encoding"
 
-    if len(encoding) < abs((end - start)/step)+1:
-        raise ValueError("More items in the interval than there are bitstrings in encoding")
-
-    if start > end: 
-        end, start = start, end
-        step *= -1
+    int(start/step)
 
     rep = {}
-    j = round(start, dp)
     i = 0
-
-    while j <= end:
-        rep[encoding[i]] = j
-        i+=1
-        j = round(j+step, dp)
+    j = int(start/step)
+    for binstr in encoding:
+        rep[binstr] = j*step
+        j+=1
 
     return rep 
 
@@ -121,33 +113,36 @@ def numBitsToEncodeInterval(interval):
     end = interval[1]
     step = interval[2]
 
-    size = abs((end - start)/step)+1
+    size = abs((end - start)/step)
     return math.ceil(math.log(size, 2))
 
 
 
-def generateGrayRepresentation(interval):
+def generateGrayRepresentation(interval, b = None):
     """
     returns gray code as an instance of the Representation class 
     for a given real interval to be used in optimization
     """
-    b = numBitsToEncodeInterval(interval)
+    if b is None:
+        b = numBitsToEncodeInterval(interval)
     gc = list(GrayCode(b).generate_gray())
     grayRep = initializeEncodings(gc, interval)
     return Representation(grayRep, "binary reflected gray")
 
 
 
-def generateBinaryRepresentation(interval):
+def generateBinaryRepresentation(interval, b = None):
     """
     returns binary code as an instance of the Representation class 
     for a given real interval to be used in optimization
     """
-    b = numBitsToEncodeInterval(interval)
+    if b is None:
+        b = numBitsToEncodeInterval(interval)
     bc = []
     for i in range(0,2**b):
         binstr = bin(i)[2:]
         bc.append(('0'*(b-len(binstr))+binstr))
+
     binRep = initializeEncodings(bc, interval)
     return Representation(binRep, "binary")
 
@@ -319,18 +314,25 @@ def eitanify(rep):
     rep = rep.get_rep()
     return [rep[b] for b in binrep]
 
-def uneitanify(rep, name = ''):
+
+def binbits(x, n):
+    """Return binary representation of x with at least n bits"""
+    bits = bin(x).split('b')[1]
+    if len(bits) <= n:
+        return '0' * (n - len(bits)) + bits
+
+def uneitanify(rep, lenb= None, name = ''):
     """
     Rewrites a rep in dict (rep object) notation from Eitan's notation
     """
     d = {}
-    lenb = int(math.log(len(rep), 2))
+    l = [None]*len(rep)   
+
+    if lenb is None:
+        lenb = int(math.log(len(rep), 2))
     for i in range(len(rep)):
-        x = bin(i)[2:]
-        x = '0'*(lenb - len(x)) + x
-        d[x] = rep[i]
+        l[rep[i]] = binbits(i,lenb)
+
+    d = {l[i] : i for i in range(len(l))}
     return Representation(d, name)
-
-
-
 
