@@ -1,4 +1,4 @@
-# Genetic Algorithms for Mathematical Optimization - Representations
+# Binary Representations in Genetic Algorithms
 
 A collection of small programs and genetic and evolutionary algorithms to help understand the effect of locality in binary-integer representations on performance. 
 
@@ -29,7 +29,7 @@ These are the most important files for this project. The ones not mentioned here
 `comparison-GA` contains code to reproduce the genetic algorithm from Caruana & Schaffer (1986). All code inside this folder is independent from anything in the top level directory. 
 
 ## Reproduction
-The paper ('Revisiting Locality in Binary-Integer Representations) already has a high level overview of the steps to produce the experiments. This section just details how to run the code. The files themselves contain more specific documentation, which may answer other questions. 
+The paper ('Revisiting Locality in Binary-Integer Representations') already has a high level overview of the steps to produce the experiments. This section just details how to run the code. The files themselves contain more specific documentation, which may answer other questions. 
 First, download the repository as is, and make sure you have the required dependencies above. 
 ### Simulated Annealing (SA)
 Run `onemax.cc`, changing any parameters in main as desired. Make sure each simulation is evolving as `SA_generation()` (line 329). Data is output each generation to the terminal.
