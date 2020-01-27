@@ -1,4 +1,4 @@
-# Binary Representations in Genetic Algorithms
+# Binary Representations in Genetic and Evolutionary Algorithms
 
 A collection of small programs and genetic and evolutionary algorithms to help understand the effect of locality in binary-integer representations on performance. 
 
