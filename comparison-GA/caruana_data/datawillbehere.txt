@@ -1,0 +1,3 @@
+Data from running the GA will be deposited in this folder.
+Each run will have its own associated text file with metadata in the title. 
+Use data_analysis.py to compute statistics from it.
