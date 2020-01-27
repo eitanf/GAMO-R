@@ -2,12 +2,13 @@
 
 A collection of small programs and genetic and evolutionary algorithms to help understand the effect of locality in binary-integer representations on performance. 
 
-Special python dependencies: sympy, numpy, pathos, matplotlib
+Special python dependencies: sympy, numpy, pathos, matplotlib, pickle
 ```
 pip install sympy
 pip install numpy
 pip install pathos
 pip install matplotlib
+pip install pickle
 ```
 Special C++ dependencies: Intel TBB Library (only for onemax.cc)
 
