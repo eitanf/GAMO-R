@@ -3,13 +3,9 @@ Code to reproduce empirical results from Caruana &amp; Schaffer 1986
 
 https://www.sciencedirect.com/science/article/pii/B9780934613644500219
 
-Special dependencies: sympy, numpy, pathos
 
-```
-pip install sympy
-pip install numpy
-pip install pathos
-```
+
+The files named "representation_bitlength.txt" (e.g. `UBL_8.txt`) contain a pickled representation object which are loaded during the initialization phase of the GA. 
 
 Instructions to download and run:
 1) Download the repository as is.
