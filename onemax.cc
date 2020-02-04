@@ -1,13 +1,17 @@
-  
 /*
- * This program lets you run a simulated annealing (SA) or Evolutionary Strategies (ES)
- * optimization on the integer One-Max problem from Rothlauf's book
+ * Run a simulated annealing (SA) or Evolutionary Strategies (ES) optimization
+ * on the generalized integer One-Max problem from Rothlauf's book:
  * "Representations for Genetic and Evolutionary Algorithms", 2nd ed., Sec. 5.4.2.
+ *
  * In main(), you can control all simulation parameters, including which
  * representation to use, which fitness function, and SA/ES generations.
  * Prerequisite: Intel TBB library (libtbb-dev on debian distributions).
+ * If you don't have TBB, use the commented-out loop in main().
+ *
  * Compile with:
-   g++-8 -Wall -Wextra -pedantic -O3 -march=native -std=c++17 onemax.cc  -ltbb -o onemax
+   g++ -Wall -Wextra -pedantic -O3 -march=native -std=c++17 onemax.cc  -ltbb -o onemax
+ *
+ * author: Eitan Frachtenberg
  */
 
 #include <algorithm>
@@ -272,6 +276,18 @@ void usage()
   std::cerr << "e:\tNumber of experiments to run concurrently\n";
 }
 
+/////////////////////////////////////////////////////////////////////////////
+// Simulation main loop
+// First, simulation parameters are chosen, including which representation
+// to interpret the bit-string with.
+// Algorithm: Loop over number of generations. In each generation, mutate
+// each organism (there are 'experiments' of them), and decide whether to use
+// the mutated offspring instead of the parent organism for the next gen.
+// The decisions on how to mutate and when to replace a parent are based on
+// the specific GEA chosen (SA / ES).
+// Results are saved per generation, aggregated over all experiments, and
+// reported on a generation-by-generation basis.
+//
 int main(int argc, char* argv[])
 {
   const size_t len = 5;  // How many bits per organism?
@@ -316,6 +332,8 @@ int main(int argc, char* argv[])
 
 
   std::cout << "# Generation\tratio_optimal\tmean_fitness\n";
+
+  // Main loops: generations and experiments
   for (unsigned g = 1; g <= generations; ++g) {
     std::atomic<unsigned> opt_count = 0;
     std::atomic<uint64_t> sum_fitness = 0;
@@ -329,7 +347,7 @@ int main(int argc, char* argv[])
       sims[i].ES_generation();
     });
 
-/* Sequential version, if TBB is missing:
+/* Sequential version of inner loop, if TBB is missing:
      for (auto& sim : sims) {
        opt_count += sim.num_optimal(maxfit);
       sum_fitness += sim.fitness();

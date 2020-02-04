@@ -40,8 +40,8 @@ def GA_SEARCH(mutrate, crossrate, popsize, gens, rep, file, fn, interval, key=mi
 #    print(key.__name__.upper() + "IMIZING " + str(fn).upper() + " (" + REP.get_name() + ")")
 
 
-    f = open(os.path.join("caruana_data", file + ".txt"), 'w')
-    g = open(os.path.join("caruana_data", file + "best_sol" + ".txt"), 'w')
+    f = open(os.path.join("results", file + ".txt"), 'w')
+    g = open(os.path.join("results", file + "best_sol" + ".txt"), 'w')
 
     # Initialize random population
     EVAL_LIMIT = 5000

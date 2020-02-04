@@ -10,4 +10,4 @@ The files named "representation_bitlength.txt" (e.g. `UBL_8.txt`) contain a pick
 Instructions to download and run:
 1) Download the repository as is.
 2) Run main.py, changing any parameters as desired
-3) Data will be deposited to caruana_data. Use data_analysis.py to compute statistics
+3) Data will be deposited to results. Use data_analysis.py to compute statistics

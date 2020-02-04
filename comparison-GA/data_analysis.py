@@ -59,8 +59,8 @@ NUM_RUNS = 3000
 reps = ["BIN", "BRG", "UBL", "NGG"]
 for rep in reps:
     for f in range(1,6):
-        fnames1 = [os.path.join("caruana_data", "f" + str(f) + "_" + rep + "_T" + str(i) + ".txt") for i in range(1,NUM_RUNS+1)]
-        fnames2 = [os.path.join("caruana_data", "f" + str(f) + "_" + rep + "_T" + str(i) + "best_sol.txt") for i in range(1,NUM_RUNS+1)]
+        fnames1 = [os.path.join("results", "f" + str(f) + "_" + rep + "_T" + str(i) + ".txt") for i in range(1,NUM_RUNS+1)]
+        fnames2 = [os.path.join("results", "f" + str(f) + "_" + rep + "_T" + str(i) + "best_sol.txt") for i in range(1,NUM_RUNS+1)]
         print(rep, ' f' + str(f))
         print(analyze(fnames1))
         best_sol_perf(fnames2, min, rep + "_f" + str(f) + ".dat")

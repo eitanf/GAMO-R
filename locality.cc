@@ -1,7 +1,11 @@
 /*
- * This tool lets you compute the locality of a bit-to-integer mapping,
- * as defined by Rothlauf's "Representations for Genetic and Evolutionary
- * Algorithms", 2nd ed., p. 77, eq. 3.23.
+ * This tool computes the locality of a bit-to-integer mapping, as defined in
+ * Rothlauf's "Representations for Genetic and Evolutionary Algorithms", 2nd ed.,
+ * p. 77, eq. 3.23.
+ * A bit-to-integer representation is given as a permutation of all the values in
+ * the range [0:2^N).
+ *
+ * author: Eitan Frachtenberg
  */
 
 #include <algorithm>
@@ -27,8 +31,9 @@ using rep_t = std::array<num_t, N>;
 using neighbors_t = std::array<bits_t, BITS>;
 
 
-///////////////////
-// Helper functions:
+//////////////////////
+// Utility functions
+
 
 // Check whether a set of values is actually a representation, namely,
 // a permutation of the values 0..N-1.
@@ -85,10 +90,11 @@ locality(const rep_t& rep)
 int main()
 {
   auto x = bit_neighbors(6);
-  rep_t bin = { 0, 1, 2, 3, 4, 5, 6, 7 };
-  rep_t brg = { 0, 1, 3, 2, 7, 6, 4, 5 };
-  rep_t ngg = { 0, 7, 1, 2, 5, 6, 4, 3 };
-  rep_t worst = { 0, 5, 6, 3, 7, 1, 2, 4 };
+  // A few sample 3-bit representations:
+  rep_t bin = { 0, 1, 2, 3, 4, 5, 6, 7 };     // Standard binary
+  rep_t brg = { 0, 1, 3, 2, 7, 6, 4, 5 };     // Binary-reflected Gray coding
+  rep_t ngg = { 0, 7, 1, 2, 5, 6, 4, 3 };     // Another Gray coding with worse locality
+  rep_t worst = { 0, 5, 6, 3, 7, 1, 2, 4 };   // Upper-bound locality representation.
 
   std::cout << "locality of binary: " << locality(bin) << "\n";
   std::cout << "locality of binary reflected gray: " << locality(brg) << "\n";
