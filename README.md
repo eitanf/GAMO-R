@@ -25,7 +25,10 @@ The following lists the most important files for this project. The ones not ment
 
 ## Reproduction
 The paper ('Revisiting Locality in Binary-Integer Representations') contains a high-level overview of the steps to reproduce the experiments in the experimental section. This section details how to run the code. The source files themselves contain more specific documentation, which may answer other questions.
-First, download the repository as is, and make sure you have the required dependencies above. 
+First, download the repository as is, and make sure you have the required dependencies above. For C++ files, we compiled using 
+
+`g++-7 -Wall -Wextra -pedantic -O3 -march=native -std=c++17 [fname].cc -o [fname]`
+
 ### Simulated Annealing (SA)
 Run `onemax.cc`, changing any parameters in main as desired. Make sure each simulation is evolving as `SA_generation()` (line 329). Data is output each generation to the terminal.
 ### Evolutionary Strategies (ES)
